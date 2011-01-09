@@ -19,8 +19,9 @@ public class QuickReminderActivity extends Activity
     private void setupMainListView() {
         ListView mainListView = (ListView) findViewById(R.id.mainListView);
 
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1 ,new String[]{"Test","Wurst"});
-        mainListView.setAdapter(arrayAdapter);
+        //ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.list_layout ,new String[]{"Test","Wurst"});
+        //mainListView.setAdapter(arrayAdapter);
+        mainListView.setAdapter(new TaskListAdapter(this));
 
     }
 }
