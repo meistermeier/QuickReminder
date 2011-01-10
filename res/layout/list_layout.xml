@@ -15,18 +15,33 @@
             android:layout_centerVertical="true"
 
             android:background="#FF0000"
-            />
-
-    <TextView
-            android:id="@+id/list_text1"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-
-            android:layout_toRightOf="@id/status_field"
-            android:textSize="20dp"
 
             />
 
+    <LinearLayout android:id="@+id/name_and_reminder"
+                  android:orientation="horizontal"
+                  android:layout_height="wrap_content"
+                  android:layout_width="fill_parent"
+                  android:layout_toRightOf="@id/status_field"
+            >
+
+        <TextView
+                android:id="@+id/list_text1"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                />
+
+
+        <ImageView
+                android:id="@+id/reminder_view"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                />
+
+    </LinearLayout>
     <TextView
             android:id="@+id/list_text2"
 
@@ -34,9 +49,10 @@
             android:layout_height="wrap_content"
 
             android:layout_toRightOf="@id/status_field"
-            android:layout_below="@id/list_text1"
+            android:layout_below="@id/name_and_reminder"
             android:textSize="14dp"
 
             />
+
 
 </RelativeLayout>
