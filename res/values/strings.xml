@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">QuickReminder</string>
+    <string name="reminder_component">Remind me</string>
+    <string name="save">Save</string>
 </resources>
