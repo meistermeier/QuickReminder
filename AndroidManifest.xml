@@ -12,5 +12,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".TaskEditActivity"/>
+        <receiver android:name=".TaskNotificationReceiver">
+            <intent-filter>
+                <action android:name="com.meistermeier.reminder.TASK_NOTIFICATION"/>
+            </intent-filter>
+            </receiver>
     </application>
 </manifest> 

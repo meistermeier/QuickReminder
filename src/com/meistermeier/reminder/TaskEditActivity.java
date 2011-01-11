@@ -1,7 +1,12 @@
 package com.meistermeier.reminder;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -15,6 +20,8 @@ import java.util.Date;
  */
 public class TaskEditActivity extends Activity {
 
+    public static final String TASK_NOTIFICATION_ACTION = "com.meistermeier.reminder.TASK_NOTIFICATION";
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task_edit);
@@ -24,6 +31,15 @@ public class TaskEditActivity extends Activity {
             fillComponentsWithData();
         }
 
+    }
+
+    public void onSave(View view) {
+        long timeinMillis = new Date().getTime() + 5000;
+        // put this task (new or just updated) in the AlarmManager
+        AlarmManager alarmManager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(TASK_NOTIFICATION_ACTION);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        alarmManager.set(AlarmManager.RTC, timeinMillis, pendingIntent);
     }
 
     private void fillComponentsWithData() {
