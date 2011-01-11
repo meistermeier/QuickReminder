@@ -3,13 +3,11 @@ package com.meistermeier.reminder;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +15,8 @@ import java.util.List;
 
 public class QuickReminderActivity extends Activity {
     private MenuItem addItem;
+
+    private static final int ADD_MENU_ID = Menu.FIRST;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class QuickReminderActivity extends Activity {
         mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                TaskItem selectedItem = (TaskItem)adapterView.getItemAtPosition(i);
+                TaskItem selectedItem = (TaskItem) adapterView.getItemAtPosition(i);
                 editItem(selectedItem);
             }
 
@@ -65,22 +65,27 @@ public class QuickReminderActivity extends Activity {
     }
 
     private void editItem(TaskItem item) {
-        Toast.makeText(this, "Will edit item " + item, Toast.LENGTH_LONG).show();
+        Intent editIntent = new Intent(this, TaskEditActivity.class);
+        editIntent.putExtra(TaskItem.NAME_FIELD, item.getName());
+        editIntent.putExtra(TaskItem.DUE_DATE_FIELD, item.getDueDate());
+        editIntent.putExtra(TaskItem.REMINDER_FIELD, item.isReminderActive());
+        editIntent.putExtra(TaskItem.ID_FIELD, item.getId());
+        startActivity(editIntent);
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        if (addItem == null) {
-            addItem = menu.add("Add");
-        }
-
-        return super.onPrepareOptionsMenu(menu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(0, ADD_MENU_ID, Menu.NONE, "Add");
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        if (item == addItem) {
-            startActivity(new Intent(this, TaskEditActivity.class));
+        switch (item.getItemId()) {
+            case ADD_MENU_ID:
+                Intent editIntent = new Intent(this, TaskEditActivity.class);
+                startActivity(editIntent);
+                break;
         }
 
         return super.onMenuItemSelected(featureId, item);
