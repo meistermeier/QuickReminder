@@ -32,17 +32,17 @@ public class QuickReminderActivity extends Activity {
 
         // Setup sample data
         TaskItem item1 = new DefaultTaskItem();
-        item1.setName("Task 1");
+        item1.setName("Task One");
         item1.setDueDate(new Date());
         item1.setReminderActive(false);
 
         TaskItem item2 = new DefaultTaskItem();
-        item2.setName("Ziemlich langer Taskname");
+        item2.setName("A quite long name for a task");
         item2.setDueDate(new Date());
         item2.setReminderActive(true);
 
         TaskItem item3 = new DefaultTaskItem();
-        item3.setName("Ziemlich langer Taskname noch laenger");
+        item3.setName("an even longer task name than the one before");
         item3.setDueDate(new Date());
         item3.setReminderActive(true);
 

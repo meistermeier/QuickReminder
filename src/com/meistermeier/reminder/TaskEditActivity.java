@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -14,6 +15,7 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Some nice information
@@ -34,12 +36,23 @@ public class TaskEditActivity extends Activity {
     }
 
     public void onSave(View view) {
-        long timeinMillis = new Date().getTime() + 5000;
+        EditText nameEditText = (EditText) findViewById(R.id.task_edit_name);
+        CheckBox checkBox = (CheckBox) findViewById(R.id.task_edit_reminder);
+        DatePicker datePicker = (DatePicker) findViewById(R.id.task_edit_date);
+        TimePicker timePicker = (TimePicker) findViewById(R.id.task_edit_time);
+
         // put this task (new or just updated) in the AlarmManager
-        AlarmManager alarmManager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(TASK_NOTIFICATION_ACTION);
+
+        // create calendar
+        Calendar calendar = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+        Log.d("QuickReminder", "Scheduled: " + new Date(calendar.getTimeInMillis()) + " now: " + new Date());
+        intent.putExtra("taskname", nameEditText.getText().toString());
+
+
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        alarmManager.set(AlarmManager.RTC, timeinMillis, pendingIntent);
+        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
     }
 
     private void fillComponentsWithData() {
@@ -65,7 +78,7 @@ public class TaskEditActivity extends Activity {
         int year = dueCalendar.get(Calendar.YEAR);
 
         // data for time picker
-        int hour = dueCalendar.get(Calendar.HOUR);
+        int hour = dueCalendar.get(Calendar.HOUR_OF_DAY);
         int minute = dueCalendar.get(Calendar.MINUTE);
 
         // populate the data to the components

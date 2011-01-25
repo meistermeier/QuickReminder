@@ -14,15 +14,18 @@ public class TaskNotificationReceiver extends BroadcastReceiver {
 
     public void onReceive(Context context, Intent intent) {
 
-        Toast.makeText(context, "TestEvent", Toast.LENGTH_LONG).show();
+        int icon = android.R.drawable.alert_dark_frame;
+        Notification notification = new Notification(icon, "things to do", System.currentTimeMillis());
 
-        Notification notification = new Notification(0, "Tickertext", System.currentTimeMillis());
-        notification.contentIntent= PendingIntent.getActivity(context,0, intent, 0);
+        CharSequence contentTitle = "QuickReminder";
+        CharSequence contentText = intent.getExtras().getString("taskname");
+        Intent notificationIntent = new Intent(context, QuickReminderActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
-        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify("tagname", 1234, notification);
+        notificationManager.notify(1234, notification);
 
     }
 
