@@ -9,21 +9,20 @@ public interface TaskItem {
 
     final static String ID_FIELD = "id";
     final static String NAME_FIELD = "name";
-    final static String DUE_DATE_FIELD = "due_date";
+    final static String DUE_DATE_FIELD = "timestamp";
     final static String REMINDER_FIELD = "reminder";
 
+    long getId();
 
-    Integer getId();
-
-    void setId(Integer id);
+    void setId(long id);
 
     String getName();
 
     void setName(String name);
 
-    Date getDueDate();
+    long getTimestamp();
 
-    void setDueDate(Date dueDate);
+    void setTimestamp(long dueDate);
 
     Boolean isReminderActive();
 

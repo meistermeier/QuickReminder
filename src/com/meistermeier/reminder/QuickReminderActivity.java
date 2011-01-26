@@ -1,17 +1,17 @@
 package com.meistermeier.reminder;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class QuickReminderActivity extends Activity {
     private MenuItem addItem;
@@ -27,31 +27,23 @@ public class QuickReminderActivity extends Activity {
 
     }
 
+    @Override
+    protected void onResume() {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(TaskNotificationReceiver.NOTIFICATION_ID);
+
+        super.onResume();
+    }
+
+
     private void setupMainListView() {
         ListView mainListView = (ListView) findViewById(R.id.mainListView);
 
-        // Setup sample data
-        TaskItem item1 = new DefaultTaskItem();
-        item1.setName("Task One");
-        item1.setDueDate(new Date());
-        item1.setReminderActive(false);
+        TaskDBOpenHelper taskDBOpenHelper = new TaskDBOpenHelper(this);
+        SQLiteDatabase readableDatabase = taskDBOpenHelper.getReadableDatabase();
+        Cursor cursor = readableDatabase.query(TaskDBOpenHelper.DB_NAME, null, null, null, null, null, "timestamp");
 
-        TaskItem item2 = new DefaultTaskItem();
-        item2.setName("A quite long name for a task");
-        item2.setDueDate(new Date());
-        item2.setReminderActive(true);
-
-        TaskItem item3 = new DefaultTaskItem();
-        item3.setName("an even longer task name than the one before");
-        item3.setDueDate(new Date());
-        item3.setReminderActive(true);
-
-        List<TaskItem> taskItemList = new ArrayList<TaskItem>();
-        taskItemList.add(item1);
-        taskItemList.add(item2);
-        taskItemList.add(item3);
-
-        mainListView.setAdapter(new TaskListAdapter(this, taskItemList));
+        mainListView.setAdapter(new TaskListAdapter(this, cursor));
 
         mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -62,12 +54,13 @@ public class QuickReminderActivity extends Activity {
 
         });
 
+        readableDatabase.close();
     }
 
     private void editItem(TaskItem item) {
         Intent editIntent = new Intent(this, TaskEditActivity.class);
         editIntent.putExtra(TaskItem.NAME_FIELD, item.getName());
-        editIntent.putExtra(TaskItem.DUE_DATE_FIELD, item.getDueDate());
+        editIntent.putExtra(TaskItem.DUE_DATE_FIELD, item.getTimestamp());
         editIntent.putExtra(TaskItem.REMINDER_FIELD, item.isReminderActive());
         editIntent.putExtra(TaskItem.ID_FIELD, item.getId());
         startActivity(editIntent);

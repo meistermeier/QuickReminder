@@ -12,6 +12,8 @@ import android.widget.Toast;
  */
 public class TaskNotificationReceiver extends BroadcastReceiver {
 
+    public final static int NOTIFICATION_ID = 21412;
+
     public void onReceive(Context context, Intent intent) {
 
         int icon = android.R.drawable.alert_dark_frame;
@@ -25,7 +27,7 @@ public class TaskNotificationReceiver extends BroadcastReceiver {
         notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1234, notification);
+        notificationManager.notify(NOTIFICATION_ID, notification);
 
     }
 

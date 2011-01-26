@@ -3,8 +3,10 @@ package com.meistermeier.reminder;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,23 +38,38 @@ public class TaskEditActivity extends Activity {
     }
 
     public void onSave(View view) {
+
         EditText nameEditText = (EditText) findViewById(R.id.task_edit_name);
         CheckBox checkBox = (CheckBox) findViewById(R.id.task_edit_reminder);
         DatePicker datePicker = (DatePicker) findViewById(R.id.task_edit_date);
         TimePicker timePicker = (TimePicker) findViewById(R.id.task_edit_time);
 
+        // create calendar
+        Calendar calendar = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute());
+
+        TaskDBOpenHelper taskDBOpenHelper = new TaskDBOpenHelper(this);
+        SQLiteDatabase writableDatabase = taskDBOpenHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("name" , nameEditText.getText().toString());
+        values.put("timestamp" ,calendar.getTimeInMillis());
+        values.put("reminder", checkBox.isChecked() ? 1 : 0);
+
+        writableDatabase.insert(TaskDBOpenHelper.DB_NAME, null, values);
+
         // put this task (new or just updated) in the AlarmManager
         AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(TASK_NOTIFICATION_ACTION);
 
-        // create calendar
-        Calendar calendar = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute());
         Log.d("QuickReminder", "Scheduled: " + new Date(calendar.getTimeInMillis()) + " now: " + new Date());
         intent.putExtra("taskname", nameEditText.getText().toString());
 
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
         alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+
+        this.finish();
     }
 
     private void fillComponentsWithData() {

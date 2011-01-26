@@ -6,16 +6,27 @@ import java.util.Date;
  * Some nice information
  */
 public class DefaultTaskItem implements TaskItem {
-    private Integer id;
+    private long id;
     private String name;
-    private Date dueDate;
+    private long timestamp;
     private boolean reminderActive;
 
-    public Integer getId() {
+    public DefaultTaskItem() {
+
+    }
+
+    public DefaultTaskItem(long id, String name, long timestamp, boolean reminderActive) {
+        this.id = id;
+        this.name = name;
+        this.timestamp = timestamp;
+        this.reminderActive = reminderActive;
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -27,12 +38,12 @@ public class DefaultTaskItem implements TaskItem {
         this.name = name;
     }
 
-    public Date getDueDate() {
-        return dueDate;
+    public long getTimestamp() {
+        return timestamp;
     }
 
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public Boolean isReminderActive() {

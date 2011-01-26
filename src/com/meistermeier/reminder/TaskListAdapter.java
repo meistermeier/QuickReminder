@@ -1,6 +1,7 @@
 package com.meistermeier.reminder;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +29,37 @@ public class TaskListAdapter extends BaseAdapter {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         this.taskItemList = taskItemList;
+
+    }
+
+    public TaskListAdapter(Context context, Cursor cursor) {
+        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        this.taskItemList = new ArrayList<TaskItem>();
+
+        if (cursor.moveToFirst()) {
+            int id = cursor.getInt(0);
+            String name = cursor.getString(1);
+            long timestamp = cursor.getLong(2);
+            boolean reminder = cursor.getInt(3) == 1;
+
+            Log.d("QuickReminder", "First entry: " + id + " " + name + " " + timestamp + " " + reminder);
+
+            taskItemList.add(new DefaultTaskItem(id, name, timestamp, reminder));
+
+            while (cursor.moveToNext()) {
+                id = cursor.getInt(0);
+                name = cursor.getString(1);
+                timestamp = cursor.getLong(1);
+                reminder = cursor.getInt(3) == 1;
+
+                Log.d("QuickReminder", "Next entry: " + id + " " + name + " " + timestamp + " " + reminder);
+                taskItemList.add(new DefaultTaskItem(id, name, timestamp, reminder));
+            }
+        }
+
+        cursor.close();
+
 
     }
 
@@ -65,7 +98,7 @@ public class TaskListAdapter extends BaseAdapter {
 
         TaskItem item = (TaskItem) getItem(i);
 
-        Date dueDate = item.getDueDate();
+        Date dueDate = new Date(item.getTimestamp());
         CharSequence formattedDueDate = DateFormat.format("dd.MM.yyyy hh:mm", dueDate);
 
         String itemName = item.getName();
@@ -79,16 +112,14 @@ public class TaskListAdapter extends BaseAdapter {
         if (itemReminderActive) {
             Log.d("QuickReminder", "Reminder active for " + itemName);
             viewHolder.reminderView.setImageResource(android.R.drawable.ic_lock_idle_alarm);
-        }
-        else {
+        } else {
             viewHolder.reminderView.setImageResource(0);
         }
 
         if (isDateOverDue(dueDate)) {
 
             viewHolder.statusView.setBackgroundColor(Color.RED);
-        }
-        else {
+        } else {
             viewHolder.statusView.setBackgroundColor(Color.GREEN);
         }
 
