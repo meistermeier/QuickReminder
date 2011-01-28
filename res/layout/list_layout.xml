@@ -26,7 +26,7 @@
             >
 
         <TextView
-                android:id="@+id/list_text1"
+                android:id="@+id/taskname_text"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
@@ -43,7 +43,7 @@
 
     </LinearLayout>
     <TextView
-            android:id="@+id/list_text2"
+            android:id="@+id/date_text"
 
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

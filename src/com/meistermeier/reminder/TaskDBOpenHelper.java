@@ -12,10 +12,10 @@ public class TaskDBOpenHelper extends SQLiteOpenHelper {
     private final static int DB_VERSION = 1;
     private final static String CREATE_QUERY = "CREATE TABLE " +
             DB_NAME +
-            " (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            "name TEXT, " +
-            "timestamp INTEGER, " +
-            "reminder INTEGER)";
+            " ("+TaskItem.ID_FIELD+" INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            TaskItem.NAME_FIELD+" TEXT, " +
+            TaskItem.TIMESTAMP_FIELD +" INTEGER, " +
+            TaskItem.REMINDER_FIELD+" INTEGER)";
 
     public TaskDBOpenHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);

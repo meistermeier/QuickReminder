@@ -47,27 +47,51 @@ public class TaskEditActivity extends Activity {
         // create calendar
         Calendar calendar = new GregorianCalendar(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getCurrentHour(), timePicker.getCurrentMinute());
 
+        // extract values
+        String taskName = nameEditText.getText().toString();
+        long timestamp = calendar.getTimeInMillis();
+        boolean reminderActive = checkBox.isChecked();
+
+        Bundle extras = getIntent().getExtras();
+
+        long taskId = 0;
+
+        if (extras != null) {
+            taskId = extras.getLong(TaskItem.ID_FIELD);
+        }
+
+
         TaskDBOpenHelper taskDBOpenHelper = new TaskDBOpenHelper(this);
         SQLiteDatabase writableDatabase = taskDBOpenHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put("name" , nameEditText.getText().toString());
-        values.put("timestamp" ,calendar.getTimeInMillis());
-        values.put("reminder", checkBox.isChecked() ? 1 : 0);
+        values.put(TaskItem.NAME_FIELD, taskName);
+        values.put(TaskItem.TIMESTAMP_FIELD, timestamp);
+        values.put(TaskItem.REMINDER_FIELD, reminderActive ? 1 : 0);
 
-        writableDatabase.insert(TaskDBOpenHelper.DB_NAME, null, values);
+        // only do a insert if it's a new record (id=0)
+        if (taskId == 0) {
+            writableDatabase.insert(TaskDBOpenHelper.DB_NAME, null, values);
+        } else {
+            writableDatabase.update(TaskDBOpenHelper.DB_NAME, values, TaskItem.ID_FIELD + "=?", new String[]{String.valueOf(taskId)});
+        }
+
+        writableDatabase.close();
 
         // put this task (new or just updated) in the AlarmManager
         AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+
         Intent intent = new Intent(TASK_NOTIFICATION_ACTION);
 
-        Log.d("QuickReminder", "Scheduled: " + new Date(calendar.getTimeInMillis()) + " now: " + new Date());
-        intent.putExtra("taskname", nameEditText.getText().toString());
+        intent.putExtra("taskname", taskName);
 
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 4321, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+        if (reminderActive) {
+            alarmManager.set(AlarmManager.RTC, timestamp, pendingIntent);
+        } else {
+            alarmManager.cancel(pendingIntent);
+        }
 
         this.finish();
     }
@@ -82,9 +106,9 @@ public class TaskEditActivity extends Activity {
         TimePicker timePicker = (TimePicker) findViewById(R.id.task_edit_time);
 
         // prepare data
-        Date dueDate = (Date) extras.get(TaskItem.DUE_DATE_FIELD);
+        long timestamp = (Long) extras.get(TaskItem.TIMESTAMP_FIELD);
         Calendar dueCalendar = Calendar.getInstance();
-        dueCalendar.setTimeInMillis(dueDate.getTime());
+        dueCalendar.setTimeInMillis(timestamp);
 
         String taskName = (String) extras.get(TaskItem.NAME_FIELD);
         Boolean reminder = (Boolean) extras.get(TaskItem.REMINDER_FIELD);

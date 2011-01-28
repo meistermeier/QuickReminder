@@ -7,9 +7,9 @@ import java.util.Date;
  */
 public interface TaskItem {
 
-    final static String ID_FIELD = "id";
+    final static String ID_FIELD = "_id";
     final static String NAME_FIELD = "name";
-    final static String DUE_DATE_FIELD = "timestamp";
+    final static String TIMESTAMP_FIELD = "timestamp";
     final static String REMINDER_FIELD = "reminder";
 
     long getId();
