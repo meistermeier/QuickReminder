@@ -1,9 +1,6 @@
 package com.meistermeier.reminder;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.NotificationManager;
+import android.app.*;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -115,6 +112,13 @@ public class QuickReminderActivity extends Activity {
     }
 
     private void deleteTask(TaskItem task) {
+        Intent intent = new Intent(TaskEditActivity.TASK_NOTIFICATION_ACTION);
+
+        intent.putExtra("taskname", task.getName());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 4321, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
+
         TaskDBOpenHelper taskDBOpenHelper = new TaskDBOpenHelper(this);
         SQLiteDatabase database = taskDBOpenHelper.getWritableDatabase();
         database.delete(TaskDBOpenHelper.DB_NAME, TaskItem.ID_FIELD + "=?", new String[]{String.valueOf(task.getId())});
