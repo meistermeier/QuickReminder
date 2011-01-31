@@ -38,7 +38,12 @@ public class QuickReminderActivity extends Activity {
     @Override
     protected void onResume() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(TaskNotificationReceiver.NOTIFICATION_ID);
+        //notificationManager.cancel(TaskNotificationReceiver.NOTIFICATION_ID);
+        // just temp
+        Bundle extras = getIntent().getExtras();
+        if (extras != null && extras.getLong("tasknotificationid")!=0L) {
+            notificationManager.cancel((int)extras.getLong("tasknotificationid"));
+        }
 
         updateTaskList();
 
@@ -115,7 +120,8 @@ public class QuickReminderActivity extends Activity {
         Intent intent = new Intent(TaskEditActivity.TASK_NOTIFICATION_ACTION);
 
         intent.putExtra("taskname", task.getName());
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 4321, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        intent.putExtra("taskid", task.getId());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)task.getId(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
 

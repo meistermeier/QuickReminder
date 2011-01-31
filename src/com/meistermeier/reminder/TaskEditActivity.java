@@ -84,8 +84,9 @@ public class TaskEditActivity extends Activity {
         Intent intent = new Intent(TASK_NOTIFICATION_ACTION);
 
         intent.putExtra("taskname", taskName);
+        intent.putExtra("taskid", taskId);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 4321, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)taskId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         if (reminderActive) {
             alarmManager.set(AlarmManager.RTC, timestamp, pendingIntent);

@@ -21,13 +21,17 @@ public class TaskNotificationReceiver extends BroadcastReceiver {
 
         CharSequence contentTitle = "QuickReminder";
         CharSequence contentText = intent.getExtras().getString("taskname");
+        long taskNotificationId = intent.getExtras().getLong("taskid");
+
         Intent notificationIntent = new Intent(context, QuickReminderActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+        notificationIntent.putExtra("tasknotificationid", taskNotificationId);
+
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(NOTIFICATION_ID, notification);
+        notificationManager.notify((int)taskNotificationId, notification);
 
     }
 

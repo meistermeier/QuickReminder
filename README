@@ -1,1 +1,6 @@
 This is a simple reminder app for android. Nothing fancy and there is still some WIP.
+
+01/31/2011:
+- Started to write some status information (that is right this readme file)
+- Multiple notifications for the same time will be scheduled. But they don't get canceled,
+  because I don't see any possibility to put extras on the intent.
