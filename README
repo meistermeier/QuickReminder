@@ -1,6 +1,5 @@
-This is a simple reminder app for android. Nothing fancy and there is still some WIP.
+This is a simple reminder app for android.
 
-01/31/2011:
-- Started to write some status information (that is right this readme file)
-- Multiple notifications for the same time will be scheduled. But they don't get canceled,
-  because I don't see any possibility to put extras on the intent.
+Current state (02/03/2011):
+- The app is now "as it is" usable to add tasks and remind the user with a notification (w/o sound, led, vibrate).
+- Custom notification configuration will be next.
