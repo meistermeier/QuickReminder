@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -16,7 +15,6 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
@@ -86,7 +84,7 @@ public class TaskEditActivity extends Activity {
         intent.putExtra("taskname", taskName);
         intent.putExtra("taskid", taskId);
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)taskId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int) taskId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         if (reminderActive) {
             alarmManager.set(AlarmManager.RTC, timestamp, pendingIntent);

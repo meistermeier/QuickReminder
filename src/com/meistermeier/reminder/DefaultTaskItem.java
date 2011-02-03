@@ -1,7 +1,5 @@
 package com.meistermeier.reminder;
 
-import java.util.Date;
-
 /**
  * Some nice information
  */

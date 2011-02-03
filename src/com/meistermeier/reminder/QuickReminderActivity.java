@@ -37,19 +37,32 @@ public class QuickReminderActivity extends Activity {
 
     @Override
     protected void onResume() {
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        //notificationManager.cancel(TaskNotificationReceiver.NOTIFICATION_ID);
-        // just temp
-        Bundle extras = getIntent().getExtras();
-        if (extras != null && extras.getLong("tasknotificationid")!=0L) {
-            notificationManager.cancel((int)extras.getLong("tasknotificationid"));
-        }
 
         updateTaskList();
 
         super.onResume();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Log.d("QuickReminder", "New Intent" + intent.getExtras());
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            Log.d("QuickReminder", "NotificationId: " + extras.getLong("tasknotificationid"));
+        } else {
+            Log.d("QuickReminder", "Extras: NULL");
+        }
+
+        if (extras != null && extras.getLong("tasknotificationid") != 0L) {
+            notificationManager.cancel((int) extras.getLong("tasknotificationid"));
+        } else {
+            Log.d("QuickReminder", "TasknotificationId is 0");
+        }
+
+    }
 
     private void setupMainListView() {
         ListView mainListView = (ListView) findViewById(R.id.mainListView);
@@ -121,7 +134,7 @@ public class QuickReminderActivity extends Activity {
 
         intent.putExtra("taskname", task.getName());
         intent.putExtra("taskid", task.getId());
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int)task.getId(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, (int) task.getId(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
 
