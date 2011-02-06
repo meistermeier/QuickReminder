@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Ringtone">
+        <CheckBoxPreference
+                android:key="ringtone_active"
+                android:title="Use ringtone"/>
+        <RingtonePreference
+                android:key="ringtone_selected"
+                android:dependency="ringtone_active"
+                android:ringtoneType="notification"
+                android:title="Choose ringtone"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="LED">
+        <CheckBoxPreference
+                android:key="led_active"
+                android:title="Led flash"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Vibraton">
+        <CheckBoxPreference
+                android:key="vibrate_active"
+                android:title="Vibration"/>
+    </PreferenceCategory>
+</PreferenceScreen>

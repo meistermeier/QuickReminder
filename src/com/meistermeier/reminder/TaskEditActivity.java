@@ -69,7 +69,7 @@ public class TaskEditActivity extends Activity {
 
         // only do a insert if it's a new record (id=0)
         if (taskId == 0) {
-            writableDatabase.insert(TaskDBOpenHelper.DB_NAME, null, values);
+            taskId = writableDatabase.insert(TaskDBOpenHelper.DB_NAME, null, values);
         } else {
             writableDatabase.update(TaskDBOpenHelper.DB_NAME, values, TaskItem.ID_FIELD + "=?", new String[]{String.valueOf(taskId)});
         }

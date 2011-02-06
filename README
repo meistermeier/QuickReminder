@@ -1,5 +1,6 @@
 This is a simple reminder app for android.
 
-Current state (02/03/2011):
-- The app is now "as it is" usable to add tasks and remind the user with a notification (w/o sound, led, vibrate).
-- Custom notification configuration will be next.
+Current state (02/06/2011):
+- The app is now "as it is" usable to add tasks and remind the user with a notification.
+- Sound, vibration, LED flashing is configurable.
+- On my 2.3 device you have to click the notification twice to get it canceled.
