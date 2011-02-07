@@ -2,7 +2,6 @@ package com.meistermeier.reminder;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,9 +49,9 @@ public class TaskListCursorAdapter extends CursorAdapter {
         }
 
         if (isDateOverDue(timestamp)) {
-            statusView.setBackgroundColor(Color.RED);
+            statusView.setImageResource(R.drawable.overtime);
         } else {
-            statusView.setBackgroundColor(Color.GREEN);
+            statusView.setImageResource(R.drawable.intime);
         }
     }
 
