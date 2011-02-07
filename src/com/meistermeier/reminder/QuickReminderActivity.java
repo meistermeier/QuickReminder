@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.gesture.Gesture;
+import android.gesture.GestureOverlayView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -24,6 +26,7 @@ public class QuickReminderActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         TaskDBOpenHelper taskDBOpenHelper = new TaskDBOpenHelper(this);
         SQLiteDatabase readableDatabase = taskDBOpenHelper.getReadableDatabase();
         Cursor cursor = readableDatabase.query(TaskDBOpenHelper.DB_NAME, null, null, null, null, null, "timestamp");
@@ -33,12 +36,21 @@ public class QuickReminderActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        GestureOverlayView gestureView = (GestureOverlayView) findViewById(R.id.gestureView);
+        gestureView.addOnGesturePerformedListener(new GestureOverlayView.OnGesturePerformedListener() {
+            public void onGesturePerformed(GestureOverlayView gestureOverlayView, Gesture gesture) {
+
+                Log.d("QuickReminder", "Some gesture has been performed.");
+            }
+        });
+
         setupMainListView();
 
     }
 
     @Override
     protected void onResume() {
+        checkForAndCancelNotification(getIntent());
 
         updateTaskList();
 
@@ -48,6 +60,11 @@ public class QuickReminderActivity extends Activity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        checkForAndCancelNotification(intent);
+
+    }
+
+    private void checkForAndCancelNotification(Intent intent) {
         Log.d("QuickReminder", "New Intent" + intent.getExtras());
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -63,7 +80,6 @@ public class QuickReminderActivity extends Activity {
         } else {
             Log.d("QuickReminder", "TasknotificationId is 0");
         }
-
     }
 
     private void setupMainListView() {
