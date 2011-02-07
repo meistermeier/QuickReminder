@@ -1,6 +1,4 @@
-This is a simple reminder app for android.
+h2. QuickReminder for Android
 
-Current state (02/06/2011):
-- The app is now "as it is" usable to add tasks and remind the user with a notification.
-- Sound, vibration, LED flashing is configurable.
-- On my 2.3 device you have to click the notification twice to get it canceled.
+* The app is now "as it is" usable to add tasks and remind the user with a notification.
+* Sound, vibration, LED flashing is configurable via preference menu.
