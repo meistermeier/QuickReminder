@@ -183,17 +183,43 @@ public class QuickReminderActivity extends Activity {
                 startActivity(intent);
                 break;
             case R.id.wipe_menu:
-                TaskDBOpenHelper taskDBOpenHelper = new TaskDBOpenHelper(this);
-                SQLiteDatabase database = taskDBOpenHelper.getWritableDatabase();
-                database.execSQL("delete from " + TaskDBOpenHelper.DB_NAME);
-                database.close();
-
-                updateTaskList();
+                showDeleteAllConfirmDialog();
                 break;
         }
 
         return super.onMenuItemSelected(featureId, item);
     }
+
+    private void showDeleteAllConfirmDialog() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setTitle("Clear all")
+                .setMessage("Every entry will be deleted.")
+                .setPositiveButton(android.R.string.yes, clearDataDialogListener)
+                .setNegativeButton(android.R.string.no, clearDataDialogListener)
+                .create();
+
+        alertDialog.show();
+    }
+
+    final DialogInterface.OnClickListener clearDataDialogListener = new DialogInterface.OnClickListener() {
+
+        public void onClick(DialogInterface dialogInterface, int button) {
+            switch (button) {
+                case AlertDialog.BUTTON_NEGATIVE:
+                    dialogInterface.cancel();
+                    break;
+                case AlertDialog.BUTTON_POSITIVE:
+                    TaskDBOpenHelper taskDBOpenHelper = new TaskDBOpenHelper(QuickReminderActivity.this);
+                    SQLiteDatabase database = taskDBOpenHelper.getWritableDatabase();
+                    database.execSQL("delete from " + TaskDBOpenHelper.DB_NAME);
+                    database.close();
+
+                    updateTaskList();
+                    dialogInterface.cancel();
+                    break;
+            }
+        }
+    };
 
 
 }

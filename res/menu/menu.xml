@@ -3,12 +3,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/add_menu"
-          android:title="Add"/>
+          android:title="@string/add_menu"/>
 
     <item android:id="@+id/config_menu"
-          android:title="Config"/>
+          android:title="@string/config_menu"/>
+
+    <item android:id="@+id/gesture_menu"
+          android:title="@string/gesture_menu"/>
 
     <item android:id="@+id/wipe_menu"
-          android:title="Wipe"/>
+          android:title="@string/wipe_menu"/>
 
 </menu>

@@ -3,4 +3,8 @@
     <string name="app_name">QuickReminder</string>
     <string name="reminder_component">Remind me</string>
     <string name="save">Save</string>
+    <string name="add_menu">Add</string>
+    <string name="config_menu">Preferences</string>
+    <string name="gesture_menu">Gesture settings</string>
+    <string name="wipe_menu">Clear all data</string>
 </resources>
