@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/add_menu"
+          android:title="Add"/>
+
+    <item android:id="@+id/config_menu"
+          android:title="Config"/>
+
+    <item android:id="@+id/wipe_menu"
+          android:title="Wipe"/>
+
+</menu>

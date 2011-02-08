@@ -11,16 +11,13 @@ import android.gesture.GestureOverlayView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 public class QuickReminderActivity extends Activity {
-
-    private static final int ADD_MENU_ID = 1;
-    private static final int CONFIG_MENU_ID = 2;
-    private static final int WIPE_MENU_ID = 3;
 
     TaskListCursorAdapter taskListCursorAdapter;
 
@@ -167,9 +164,9 @@ public class QuickReminderActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, ADD_MENU_ID, Menu.NONE, "Add");
-        menu.add(0, CONFIG_MENU_ID, Menu.NONE, "Config");
-        menu.add(0, WIPE_MENU_ID, Menu.NONE, "Wipe Data");
+
+        MenuInflater menuInflater = new MenuInflater(this);
+        menuInflater.inflate(R.menu.menu, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -177,15 +174,15 @@ public class QuickReminderActivity extends Activity {
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         switch (item.getItemId()) {
-            case ADD_MENU_ID:
+            case R.id.add_menu:
                 Intent editIntent = new Intent(this, TaskEditActivity.class);
                 startActivity(editIntent);
                 break;
-            case CONFIG_MENU_ID:
+            case R.id.config_menu:
                 Intent intent = new Intent().setClass(this, ReminderPreferences.class);
                 startActivity(intent);
                 break;
-            case WIPE_MENU_ID:
+            case R.id.wipe_menu:
                 TaskDBOpenHelper taskDBOpenHelper = new TaskDBOpenHelper(this);
                 SQLiteDatabase database = taskDBOpenHelper.getWritableDatabase();
                 database.execSQL("delete from " + TaskDBOpenHelper.DB_NAME);
