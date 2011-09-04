@@ -37,7 +37,7 @@ public class QuickReminderActivity extends Activity {
         gestureView.addOnGesturePerformedListener(new GestureOverlayView.OnGesturePerformedListener() {
             public void onGesturePerformed(GestureOverlayView gestureOverlayView, Gesture gesture) {
 
-                Log.d("QuickReminder", "Some gesture has been performed.");
+                Log.d("QuickReminder", "Some gestures has been performed.");
             }
         });
 
@@ -117,10 +117,10 @@ public class QuickReminderActivity extends Activity {
                 };
 
                 AlertDialog alertDialog = new AlertDialog.Builder(QuickReminderActivity.this).
-                        setTitle("Delete Task").
-                        setMessage(selectedTask.getName()).
-                        setPositiveButton("Yes", confirmationListener).
-                        setNegativeButton("No", confirmationListener).
+                        setTitle(R.string.delete_dialog_title).
+                        setMessage(R.string.delete_dialog_message+ " " + selectedTask.getName()).
+                        setPositiveButton(android.R.string.yes, confirmationListener).
+                        setNegativeButton(android.R.string.no, confirmationListener).
                         create();
 
                 alertDialog.show();
@@ -185,6 +185,10 @@ public class QuickReminderActivity extends Activity {
             case R.id.wipe_menu:
                 showDeleteAllConfirmDialog();
                 break;
+            case R.id.gesture_menu:
+                Intent gestureIntent = new Intent(this, GestureActivity.class);
+                startActivity(gestureIntent);
+                break;
         }
 
         return super.onMenuItemSelected(featureId, item);
@@ -192,8 +196,8 @@ public class QuickReminderActivity extends Activity {
 
     private void showDeleteAllConfirmDialog() {
         AlertDialog alertDialog = new AlertDialog.Builder(this)
-                .setTitle("Clear all")
-                .setMessage("Every entry will be deleted.")
+                .setTitle(R.string.wipe_dialog_title)
+                .setMessage(R.string.wipe_dialog_message)
                 .setPositiveButton(android.R.string.yes, clearDataDialogListener)
                 .setNegativeButton(android.R.string.no, clearDataDialogListener)
                 .create();

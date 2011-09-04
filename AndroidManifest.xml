@@ -19,5 +19,6 @@
             </intent-filter>
         </receiver>
         <activity android:name=".ReminderPreferences"/>
+        <activity android:name=".GestureActivity"/>
     </application>
 </manifest> 
